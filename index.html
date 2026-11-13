@@ -307,14 +307,14 @@
       </div>
     </div>
 
-    <!-- SUSPECT PROFILE WITH MUGSHOT -->
+    <!-- SUSPECT PROFILE WITH LOCAL IMAGE PICKER -->
     <div class="card">
       <div class="card-header">
         <span>02 // ARRESTEE IDENTIFICATION & MUGSHOT</span>
         <span>SUBJECT PROFILE</span>
       </div>
       <div class="suspect-layout">
-        <!-- Kotak Foto Suspect -->
+        <!-- Kotak Preview Foto -->
         <div class="field" style="align-items: center;">
           <label>Suspect Mugshot</label>
           <div class="mugshot-box" id="mugshot-preview-box">
@@ -322,11 +322,11 @@
             <img id="mugshot-img" src="" alt="Mugshot">
           </div>
         </div>
-        <!-- Detail Input Data Suspect -->
+        <!-- Detail Input Data & Pilih File Galeri -->
         <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
           <div class="field">
-            <label>Mugshot Image URL (Imgur / Direct Link)</label>
-            <input type="text" id="suspect_photo_url" placeholder="https://i.imgur.com/xxxx.png" oninput="updateMugshot(this.value)">
+            <label>Upload Foto dari Galeri HP</label>
+            <input type="file" id="suspect_file" accept="image/*" onchange="previewLocalImage(event)" style="padding: 6px; font-size: 11px; cursor: pointer; background: #0f141e; border: 1px solid #2d3a54; color: #f8fafc; border-radius: 5px;">
           </div>
           <div class="grid-2">
             <div class="field">
@@ -442,7 +442,7 @@
 
   <!-- FOOTER -->
   <div class="mdt-footer">
-    <span>LSPD-MDT-V4.3 // HARBOR & METROPOLITAN NETWORK</span>
+    <span>LSPD-MDT-V4.4 // HARBOR & METROPOLITAN NETWORK</span>
     <span>FOR OFFICIAL LAW ENFORCEMENT USE ONLY</span>
   </div>
 </div>
@@ -455,17 +455,19 @@
 </div>
 
 <script>
-  function updateMugshot(url) {
+  function previewLocalImage(event) {
+    const file = event.target.files[0];
     const img = document.getElementById("mugshot-img");
     const text = document.getElementById("mugshot-text");
-    if (url.trim() !== "") {
-      img.src = url;
-      img.style.display = "block";
-      text.style.display = "none";
-    } else {
-      img.src = "";
-      img.style.display = "none";
-      text.style.display = "block";
+    
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        img.src = e.target.result;
+        img.style.display = "block";
+        text.style.display = "none";
+      }
+      reader.readAsDataURL(file);
     }
   }
 
@@ -498,9 +500,6 @@
       chargesText += `  ${idx + 1}. **[${cls}] ${code}** — ${desc}\n`;
     });
 
-    const photoUrl = document.getElementById("suspect_photo_url").value;
-    const photoText = photoUrl ? `[Lihat Foto Suspect](${photoUrl})` : "Tidak ada foto";
-
     const output = `**LOS SANTOS POLICE DEPARTMENT — ARREST & BOOKING RECORD**
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 * **Booking # / DR #:** ${document.getElementById("booking_no").value || "-"} / ${document.getElementById("dr_no").value || "-"}
@@ -509,7 +508,6 @@
 * **Location:** ${document.getElementById("arrest_loc").value || "-"}
 
 **[ARRESTEE PROFILE]**
-* **Mugshot:** ${photoText}
 * **Full Name:** ${document.getElementById("suspect_name").value || "-"} (Alias: ${document.getElementById("suspect_alias").value || "None"})
 * **ID / Age / Sex:** ${document.getElementById("suspect_id").value || "-"} | ${document.getElementById("suspect_age").value || "-"} | ${document.getElementById("suspect_sex").value}
 
