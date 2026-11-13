@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LSPD - Arrest Report Form</title>
+  <!-- Library html2canvas untuk fitur simpan gambar -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Courier New", Courier, monospace;
+    }
+    body {
+      background-color: #1e2229;
+      margin: 0;
+      padding: 20px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .paper {
+      background: #ffffff;
+      width: 100%;
+      max-width: 850px;
+      padding: 35px 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border-top: 8px solid #0b2239;
+      color: #111;
+      position: relative;
+    }
+    .watermark-note {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      font-size: 9px;
+      font-weight: bold;
+      color: #555;
+      letter-spacing: 1px;
+    }
+    .header {
+      text-align: center;
+      border-bottom: 2px solid #111;
+      padding-bottom: 12px;
+      margin-bottom: 15px;
+    }
+    .lspd-logo {
+      width: 60px;
+      height: auto;
+      margin-bottom: 6px;
+    }
+    .header h1 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 18px;
+      letter-spacing: 1.5px;
+      margin: 0;
+      color: #0b2239;
+      font-weight: bold;
+    }
+    .header h2 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
+      margin: 3px 0;
+      color: #333;
+    }
+    .header h3 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      letter-spacing: 2px;
+      margin: 5px 0 0;
+      color: #111;
+      border-top: 1px solid #111;
+      display: inline-block;
+      padding-top: 3px;
+    }
+    .meta-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      border: 1.5px solid #111;
+      border-bottom: none;
+      font-size: 11px;
+    }
+    .meta-box {
+      padding: 6px 8px;
+      border-right: 1.5px solid #111;
+    }
+    .meta-box:last-child {
+      border-right: none;
+    }
+    .meta-box label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .meta-box input, .meta-box select {
+      width: 100%;
+      border: none;
+      background: transparent;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 12px;
+      outline: none;
+      color: #000;
+    }
+    .section-box {
+      border: 1.5px solid #111;
+      margin-bottom: -1.5px;
+    }
+    .section-title {
+      background-color: #0b2239;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 3px 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    .sub-box {
+      padding: 6px 8px;
+      border-right: 1.5px solid #111;
+      border-top: 1.5px solid #111;
+      font-size: 11px;
+    }
+    .sub-box:last-child {
+      border-right: none;
+    }
+    .sub-box label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 3px;
+      text-transform: uppercase;
+      font-size: 10px;
+    }
+    .sub-box input, .sub-box select, .sub-box textarea {
+      width: 100%;
+      border: none;
+      background: #f9fafb;
+      padding: 4px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 12px;
+      outline: none;
+    }
+    .sub-box textarea {
+      resize: vertical;
+      min-height: 90px;
+      border: 1px solid #ccc;
+    }
+    .signature-area {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1.5px solid #111;
+      border-top: none;
+      text-align: center;
+      padding: 20px 10px 10px;
+    }
+    .sig-line {
+      width: 80%;
+      margin: 0 auto 5px;
+      border-bottom: 1px solid #111;
+    }
+    .sig-area input {
+      width: 80%;
+      border: none;
+      text-align: center;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 12px;
+      outline: none;
+      background: transparent;
+    }
+    .footer-note {
+      text-align: center;
+      font-size: 9px;
+      color: #444;
+      margin-top: 8px;
+      letter-spacing: 0.5px;
+    }
+    .actions-bar {
+      width: 100%;
+      max-width: 850px;
+      background: #282d37;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 6px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    button {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 10px 16px;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      background-color: #16a34a;
+      color: #fff;
+    }
+    button:hover {
+      background-color: #15803d;
+    }
+    .btn-copy {
+      background-color: #0b2239;
+    }
+    .btn-copy:hover {
+      background-color: #163a5f;
+    }
+    .btn-img {
+      background-color: #b8860b;
+    }
+    .btn-img:hover {
+      background-color: #9a6f08;
+    }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .paper { box-shadow: none; border: none; padding: 0; }
+      .actions-bar { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="paper" id="report-form">
+  <div class="watermark-note">FOR OFFICIAL USE ONLY</div>
+  
+  <div class="header">
+    <img src="https://i.imgur.com/3fSSqST.png" alt="LSPD Logo" class="lspd-logo">
+    <h1>CITY OF LOS SANTOS</h1>
+    <h2>POLICE DEPARTMENT</h2>
+    <p style="font-size: 10px; margin: 2px 0; color: #555;">San Andreas State</p>
+    <h3>ARREST REPORT</h3>
+  </div>
+
+  <!-- META BAR -->
+  <div class="meta-row">
+    <div class="meta-box">
+      <label>BOOKING #:</label>
+      <input type="text" id="booking_no" placeholder="26-BK-9921">
+    </div>
+    <div class="meta-box">
+      <label>DR #:</label>
+      <input type="text" id="dr" placeholder="26-3022-5523">
+    </div>
+    <div class="meta-box">
+      <label>STATION / DIVISION:</label>
+      <select id="station">
+        <option>Harbor Patrol Division</option>
+        <option>Harbor Detective Area</option>
+        <option>Harbor Gang Detective</option>
+        <option>Metropolitan Division</option>
+        <option>Harbor Gang Impact Team</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ARRESTEE INFORMATION -->
+  <div class="section-box">
+    <div class="section-title">Arrestee Information (Suspect Details)</div>
+    <div class="grid-2">
+      <div class="sub-box" style="border-top:none;">
+        <label>Full Name</label>
+        <input type="text" id="suspect_name" placeholder="Nama Tersangka">
+      </div>
+      <div class="sub-box" style="border-top:none; border-right:none;">
+        <label>Alias / Moniker</label>
+        <input type="text" id="suspect_alias" placeholder="Alias (Jika ada)">
+      </div>
+    </div>
+    <div class="grid-3" style="border-top: 1.5px solid #111;">
+      <div class="sub-box" style="border-top:none;">
+        <label>Age / DOB</label>
+        <input type="text" id="suspect_age" placeholder="25 / 18-10-2000">
+      </div>
+      <div class="sub-box" style="border-top:none;">
+        <label>Sex</label>
+        <select id="suspect_sex">
+          <option>Male</option>
+          <option>Female</option>
+        </select>
+      </div>
+      <div class="sub-box" style="border-top:none; border-right:none;">
+        <label>Race / Ethnicity</label>
+        <input type="text" id="suspect_race" placeholder="Caucasian / Hispanic / Afro">
+      </div>
+    </div>
+  </div>
+
+  <!-- ARREST DETAILS -->
+  <div class="section-box">
+    <div class="section-title">Arrest Details & Charges</div>
+    <div class="grid-3" style="grid-template-columns: 2fr 1fr 1fr;">
+      <div class="sub-box" style="border-top:none;">
+        <label>Date & Time of Arrest</label>
+        <div style="display: flex; gap: 5px;">
+          <input type="date" id="arrest_date" style="flex: 1;">
+          <input type="text" id="arrest_time" placeholder="23:41" style="width: 60px;">
+        </div>
+      </div>
+      <div class="sub-box" style="border-top:none;">
+        <label>Location of Arrest</label>
+        <input type="text" id="arrest_location" placeholder="Elysian Island, LS">
+      </div>
+      <div class="sub-box" style="border-top:none; border-right:none;">
+        <label>Arrest Type</label>
+        <select id="arrest_type">
+          <option>FELONY</option>
+          <option>MISDEMEANOR</option>
+          <option>WARRANT</option>
+          <option>PAROLE VIOLATION</option>
+        </select>
+      </div>
+    </div>
+    <div class="sub-box" style="border-right:none; border-top: 1.5px solid #111;">
+      <label>Penal Code Charges / Pelanggaran Pasal</label>
+      <input type="text" id="charges" placeholder="Contoh: PC 501 (Assault), PC 204 (Resisting Arrest)">
+    </div>
+  </div>
+
+  <!-- NARRATIVE SUMMARY -->
+  <div class="section-box">
+    <div class="section-title">Arrest Narrative / Kronologi Penangkapan</div>
+    <div class="sub-box" style="border-right:none;">
+      <textarea id="narrative" placeholder="Tuliskan kronologi lengkap penangkapan, tindakan kepolisian, dan barang bukti yang disita..."></textarea>
+    </div>
+  </div>
+
+  <!-- BOOKING & EVIDENCE -->
+  <div class="section-box">
+    <div class="section-title">Property / Evidence Seized & Booking Status</div>
+    <div class="grid-2">
+      <div class="sub-box" style="border-top:none;">
+        <label>Confiscated Items / Barang Bukti</label>
+        <input type="text" id="evidence" placeholder="Contoh: 1x Pistol, 50 gram Material, dll">
+      </div>
+      <div class="sub-box" style="border-top:none; border-right:none;">
+        <label>Booking Facility / Jail Destination</label>
+        <input type="text" id="jail" placeholder="Mission Row Holding Facility / State Prison">
+      </div>
+    </div>
+  </div>
+
+  <!-- REPORTING OFFICER -->
+  <div class="section-box">
+    <div class="section-title">Arresting / Reporting Officers</div>
+    <div class="grid-2">
+      <div class="sub-box" style="border-top:none;">
+        <label>Primary Officer Name & Badge</label>
+        <input type="text" id="officer_name" placeholder="Dwayne Tyler (#25770)">
+      </div>
+      <div class="sub-box" style="border-top:none; border-right:none;">
+        <label>Assisting Officer / Unit</label>
+        <input type="text" id="assisting_officer" placeholder="1-ADAM-12 / Sergio Torres">
+      </div>
+    </div>
+  </div>
+
+  <!-- SIGNATURES -->
+  <div class="signature-area">
+    <div>
+      <div class="sig-line"></div>
+      <input type="text" id="sig_officer" placeholder="Ketik Nama Officer">
+      <div style="font-size: 10px; color: #444; margin-top: 2px;">PRIMARY ARRESTING OFFICER</div>
+    </div>
+    <div>
+      <div class="sig-line"></div>
+      <input type="text" id="sig_super" placeholder="Ketik Nama Supervisor">
+      <div style="font-size: 10px; color: #444; margin-top: 2px;">BOOKING SUPERVISOR APPROVAL</div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    LSPD-AR-02 (Rev. 2026) — FOR OFFICIAL USE ONLY (LOS SANTOS POLICE DEPARTMENT)
+  </div>
+</div>
+
+<!-- TOMBOL AKSI -->
+<div class="actions-bar">
+  <button class="btn-copy" onclick="copyToDiscord()">📋 Copy Teks (Discord)</button>
+  <button class="btn-img" onclick="saveAsImage()">📷 Simpan Gambar (PNG)</button>
+  <button onclick="window.print()">🖨️ Cetak PDF / Print</button>
+</div>
+
+<script>
+  function copyToDiscord() {
+    const text = `**LOS SANTOS POLICE DEPARTMENT — ARREST REPORT**
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+* **Booking # / DR#:** ${document.getElementById("booking_no").value || "-"} / ${document.getElementById("dr").value || "-"}
+* **Station / Division:** ${document.getElementById("station").value}
+* **Date & Time:** ${document.getElementById("arrest_date").value || "-"} | ${document.getElementById("arrest_time").value || "-"} WIB
+* **Location:** ${document.getElementById("arrest_location").value || "-"}
+* **Arrest Type:** [${document.getElementById("arrest_type").value}]
+
+**[ARRESTEE INFORMATION]**
+* **Name (Alias):** ${document.getElementById("suspect_name").value || "-"} (${document.getElementById("suspect_alias").value || "None"})
+* **Demographics:** ${document.getElementById("suspect_age").value || "-"} yrs | ${document.getElementById("suspect_sex").value} | ${document.getElementById("suspect_race").value || "-"}
+* **Charges:** ${document.getElementById("charges").value || "-"}
+
+**[NARRATIVE SUMMARY]**
+${document.getElementById("narrative").value || "-"}
+
+**[EVIDENCE & FACILITY]**
+* **Seized Property:** ${document.getElementById("evidence").value || "None"}
+* **Destination:** ${document.getElementById("jail").value || "-"}
+
+**[ARRESTING OFFICERS]**
+* **Primary:** ${document.getElementById("officer_name").value || "-"}`;
+
+    navigator.clipboard.writeText(text).then(() => {
+      alert("Format Arrest Report berhasil disalin untuk Discord!");
+    });
+  }
+
+  function saveAsImage() {
+    const element = document.getElementById("report-form");
+    html2canvas(element, { scale: 2 }).then(canvas => {
+      const link = document.createElement("a");
+      link.download = "LSPD-Arrest-Report.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    });
+  }
+</script>
+
+</body>
+</html>
