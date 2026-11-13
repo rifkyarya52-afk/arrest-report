@@ -3,427 +3,478 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LSPD - Arrest Report Form</title>
-  <!-- Library html2canvas untuk fitur simpan gambar -->
+  <title>LSPD MDT — Arrest & Booking System</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
     * {
       box-sizing: border-box;
-      font-family: "Courier New", Courier, monospace;
+      margin: 0;
+      padding: 0;
     }
     body {
-      background-color: #1e2229;
-      margin: 0;
-      padding: 20px 10px;
+      background-color: #0b0e14;
+      color: #e2e8f0;
+      font-family: 'Inter', sans-serif;
+      padding: 25px 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-    .paper {
-      background: #ffffff;
+    .mdt-container {
       width: 100%;
-      max-width: 850px;
-      padding: 35px 40px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      border-top: 8px solid #0b2239;
-      color: #111;
-      position: relative;
+      max-width: 900px;
+      background: #131822;
+      border: 1px solid #263147;
+      border-radius: 10px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      overflow: hidden;
     }
-    .watermark-note {
-      position: absolute;
-      top: 15px;
-      right: 25px;
-      font-size: 9px;
-      font-weight: bold;
-      color: #555;
-      letter-spacing: 1px;
+    /* TOP BAR */
+    .mdt-topbar {
+      background: linear-gradient(90deg, #091526 0%, #102647 100%);
+      border-bottom: 2px solid #2563eb;
+      padding: 18px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
     }
-    .header {
-      text-align: center;
-      border-bottom: 2px solid #111;
-      padding-bottom: 12px;
-      margin-bottom: 15px;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
     }
-    .lspd-logo {
-      width: 60px;
+    .brand img {
+      width: 52px;
       height: auto;
-      margin-bottom: 6px;
+      filter: drop-shadow(0 0 8px rgba(37, 99, 235, 0.5));
     }
-    .header h1 {
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 18px;
-      letter-spacing: 1.5px;
-      margin: 0;
-      color: #0b2239;
-      font-weight: bold;
-    }
-    .header h2 {
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 13px;
-      margin: 3px 0;
-      color: #333;
-    }
-    .header h3 {
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 12px;
-      letter-spacing: 2px;
-      margin: 5px 0 0;
-      color: #111;
-      border-top: 1px solid #111;
-      display: inline-block;
-      padding-top: 3px;
-    }
-    .meta-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      border: 1.5px solid #111;
-      border-bottom: none;
-      font-size: 11px;
-    }
-    .meta-box {
-      padding: 6px 8px;
-      border-right: 1.5px solid #111;
-    }
-    .meta-box:last-child {
-      border-right: none;
-    }
-    .meta-box label {
-      font-weight: bold;
-      display: block;
-      margin-bottom: 2px;
-    }
-    .meta-box input, .meta-box select {
-      width: 100%;
-      border: none;
-      background: transparent;
-      font-family: "Courier New", Courier, monospace;
-      font-size: 12px;
-      outline: none;
-      color: #000;
-    }
-    .section-box {
-      border: 1.5px solid #111;
-      margin-bottom: -1.5px;
-    }
-    .section-title {
-      background-color: #0b2239;
-      color: #fff;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 10px;
-      font-weight: bold;
-      padding: 3px 8px;
+    .brand-text h1 {
+      font-size: 17px;
+      font-weight: 800;
       letter-spacing: 1px;
-      text-transform: uppercase;
+      color: #ffffff;
     }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+    .brand-text p {
+      font-size: 11px;
+      color: #93c5fd;
+      letter-spacing: 1.5px;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .status-badge {
+      background: rgba(220, 38, 38, 0.15);
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 6px;
+      letter-spacing: 1px;
+    }
+
+    /* MAIN CONTENT */
+    .mdt-body {
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .card {
+      background: #19202e;
+      border: 1px solid #28344b;
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .card-header {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: #60a5fa;
+      text-transform: uppercase;
+      border-bottom: 1px solid #28344b;
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     .grid-3 {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
     }
-    .sub-box {
-      padding: 6px 8px;
-      border-right: 1.5px solid #111;
-      border-top: 1.5px solid #111;
-      font-size: 11px;
-    }
-    .sub-box:last-child {
-      border-right: none;
-    }
-    .sub-box label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 3px;
-      text-transform: uppercase;
-      font-size: 10px;
-    }
-    .sub-box input, .sub-box select, .sub-box textarea {
-      width: 100%;
-      border: none;
-      background: #f9fafb;
-      padding: 4px;
-      font-family: "Courier New", Courier, monospace;
-      font-size: 12px;
-      outline: none;
-    }
-    .sub-box textarea {
-      resize: vertical;
-      min-height: 90px;
-      border: 1px solid #ccc;
-    }
-    .signature-area {
+    .grid-2 {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      border: 1.5px solid #111;
-      border-top: none;
-      text-align: center;
-      padding: 20px 10px 10px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
     }
-    .sig-line {
-      width: 80%;
-      margin: 0 auto 5px;
-      border-bottom: 1px solid #111;
+    @media (max-width: 650px) {
+      .grid-3, .grid-2 { grid-template-columns: 1fr; }
     }
-    .sig-area input {
-      width: 80%;
-      border: none;
-      text-align: center;
-      font-family: "Courier New", Courier, monospace;
-      font-size: 12px;
-      outline: none;
-      background: transparent;
-    }
-    .footer-note {
-      text-align: center;
-      font-size: 9px;
-      color: #444;
-      margin-top: 8px;
-      letter-spacing: 0.5px;
-    }
-    .actions-bar {
-      width: 100%;
-      max-width: 850px;
-      background: #282d37;
-      padding: 15px;
-      margin-top: 15px;
-      border-radius: 6px;
+    .field {
       display: flex;
-      gap: 10px;
-      justify-content: center;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .field label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .field input, .field select, .field textarea {
+      background: #0f141e;
+      border: 1px solid #2d3a54;
+      color: #f8fafc;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      padding: 9px 11px;
+      border-radius: 5px;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: #3b82f6;
+    }
+    .field textarea {
+      min-height: 95px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    /* DYNAMIC CHARGES */
+    .charges-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .charge-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 120px 36px;
+      gap: 8px;
+      align-items: center;
+    }
+    @media (max-width: 650px) {
+      .charge-row { grid-template-columns: 1fr; }
+    }
+    .btn-add {
+      background: #1d4ed8;
+      color: #fff;
+      border: none;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn-add:hover { background: #2563eb; }
+    .btn-del {
+      background: #7f1d1d;
+      color: #fca5a5;
+      border: none;
+      height: 34px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn-del:hover { background: #991b1b; }
+
+    /* FOOTER */
+    .mdt-footer {
+      background: #0f141e;
+      border-top: 1px solid #263147;
+      padding: 12px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #64748b;
+    }
+
+    /* ACTION BUTTONS */
+    .actions {
+      width: 100%;
+      max-width: 900px;
+      margin-top: 16px;
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
       flex-wrap: wrap;
     }
-    button {
-      font-family: Arial, Helvetica, sans-serif;
+    .action-btn {
+      font-family: 'Inter', sans-serif;
       font-size: 12px;
-      font-weight: bold;
-      padding: 10px 16px;
+      font-weight: 700;
+      padding: 11px 18px;
       border: none;
+      border-radius: 6px;
       cursor: pointer;
-      border-radius: 4px;
-      background-color: #16a34a;
       color: #fff;
+      transition: transform 0.1s, opacity 0.2s;
     }
-    button:hover {
-      background-color: #15803d;
-    }
-    .btn-copy {
-      background-color: #0b2239;
-    }
-    .btn-copy:hover {
-      background-color: #163a5f;
-    }
-    .btn-img {
-      background-color: #b8860b;
-    }
-    .btn-img:hover {
-      background-color: #9a6f08;
-    }
+    .action-btn:active { transform: scale(0.98); }
+    .btn-discord { background: #4f46e5; }
+    .btn-png { background: #0284c7; }
+    .btn-print { background: #059669; }
+
     @media print {
       body { background: #fff; padding: 0; }
-      .paper { box-shadow: none; border: none; padding: 0; }
-      .actions-bar { display: none; }
+      .actions { display: none; }
     }
   </style>
 </head>
 <body>
 
-<div class="paper" id="report-form">
-  <div class="watermark-note">FOR OFFICIAL USE ONLY</div>
-  
-  <div class="header">
-    <img src="https://i.imgur.com/3fSSqST.png" alt="LSPD Logo" class="lspd-logo">
-    <h1>CITY OF LOS SANTOS</h1>
-    <h2>POLICE DEPARTMENT</h2>
-    <p style="font-size: 10px; margin: 2px 0; color: #555;">San Andreas State</p>
-    <h3>ARREST REPORT</h3>
+<div class="mdt-container" id="mdt-capture">
+  <!-- HEADER -->
+  <div class="mdt-topbar">
+    <div class="brand">
+      <img src="https://i.imgur.com/3fSSqST.png" alt="LSPD Logo">
+      <div class="brand-text">
+        <h1>LOS SANTOS POLICE DEPARTMENT</h1>
+        <p>MOBILE DATA TERMINAL // ARREST & BOOKING RECORD</p>
+      </div>
+    </div>
+    <div class="status-badge">CLASSIFIED // LAW ENFORCEMENT</div>
   </div>
 
-  <!-- META BAR -->
-  <div class="meta-row">
-    <div class="meta-box">
-      <label>BOOKING #:</label>
-      <input type="text" id="booking_no" placeholder="26-BK-9921">
-    </div>
-    <div class="meta-box">
-      <label>DR #:</label>
-      <input type="text" id="dr" placeholder="26-3022-5523">
-    </div>
-    <div class="meta-box">
-      <label>STATION / DIVISION:</label>
-      <select id="station">
-        <option>Harbor Patrol Division</option>
-        <option>Harbor Detective Area</option>
-        <option>Harbor Gang Detective</option>
-        <option>Metropolitan Division</option>
-        <option>Harbor Gang Impact Team</option>
-      </select>
-    </div>
-  </div>
-
-  <!-- ARRESTEE INFORMATION -->
-  <div class="section-box">
-    <div class="section-title">Arrestee Information (Suspect Details)</div>
-    <div class="grid-2">
-      <div class="sub-box" style="border-top:none;">
-        <label>Full Name</label>
-        <input type="text" id="suspect_name" placeholder="Nama Tersangka">
+  <!-- BODY -->
+  <div class="mdt-body">
+    
+    <!-- RECORD METADATA -->
+    <div class="card">
+      <div class="card-header">
+        <span>01 // RECORD & DIVISION METADATA</span>
+        <span>FORM LSPD-MDT-2026</span>
       </div>
-      <div class="sub-box" style="border-top:none; border-right:none;">
-        <label>Alias / Moniker</label>
-        <input type="text" id="suspect_alias" placeholder="Alias (Jika ada)">
-      </div>
-    </div>
-    <div class="grid-3" style="border-top: 1.5px solid #111;">
-      <div class="sub-box" style="border-top:none;">
-        <label>Age / DOB</label>
-        <input type="text" id="suspect_age" placeholder="25 / 18-10-2000">
-      </div>
-      <div class="sub-box" style="border-top:none;">
-        <label>Sex</label>
-        <select id="suspect_sex">
-          <option>Male</option>
-          <option>Female</option>
-        </select>
-      </div>
-      <div class="sub-box" style="border-top:none; border-right:none;">
-        <label>Race / Ethnicity</label>
-        <input type="text" id="suspect_race" placeholder="Caucasian / Hispanic / Afro">
-      </div>
-    </div>
-  </div>
-
-  <!-- ARREST DETAILS -->
-  <div class="section-box">
-    <div class="section-title">Arrest Details & Charges</div>
-    <div class="grid-3" style="grid-template-columns: 2fr 1fr 1fr;">
-      <div class="sub-box" style="border-top:none;">
-        <label>Date & Time of Arrest</label>
-        <div style="display: flex; gap: 5px;">
-          <input type="date" id="arrest_date" style="flex: 1;">
-          <input type="text" id="arrest_time" placeholder="23:41" style="width: 60px;">
+      <div class="grid-3">
+        <div class="field">
+          <label>Booking Number</label>
+          <input type="text" id="booking_no" placeholder="BK-2026-8841">
+        </div>
+        <div class="field">
+          <label>Incident / DR #</label>
+          <input type="text" id="dr_no" placeholder="DR-26-4410">
+        </div>
+        <div class="field">
+          <label>Assigned Division</label>
+          <select id="division">
+            <option>Harbor Patrol Division</option>
+            <option>Harbor Detective Area</option>
+            <option>Harbor Gang Detective</option>
+            <option>Metropolitan Division</option>
+            <option>Harbor Gang Impact Team</option>
+          </select>
         </div>
       </div>
-      <div class="sub-box" style="border-top:none;">
-        <label>Location of Arrest</label>
-        <input type="text" id="arrest_location" placeholder="Elysian Island, LS">
+    </div>
+
+    <!-- SUSPECT PROFILE -->
+    <div class="card">
+      <div class="card-header">
+        <span>02 // ARRESTEE IDENTIFICATION</span>
+        <span>SUBJECT PROFILE</span>
       </div>
-      <div class="sub-box" style="border-top:none; border-right:none;">
-        <label>Arrest Type</label>
-        <select id="arrest_type">
-          <option>FELONY</option>
-          <option>MISDEMEANOR</option>
-          <option>WARRANT</option>
-          <option>PAROLE VIOLATION</option>
-        </select>
+      <div class="grid-3" style="margin-bottom: 12px;">
+        <div class="field">
+          <label>Full Name</label>
+          <input type="text" id="suspect_name" placeholder="Nama Lengkap Tersangka">
+        </div>
+        <div class="field">
+          <label>Street Alias / Moniker</label>
+          <input type="text" id="suspect_alias" placeholder="Alias (Jika Ada)">
+        </div>
+        <div class="field">
+          <label>ID / SSN Number</label>
+          <input type="text" id="suspect_id" placeholder="LS-992014">
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="field">
+          <label>Age / DOB</label>
+          <input type="text" id="suspect_age" placeholder="24 / 12-04-2002">
+        </div>
+        <div class="field">
+          <label>Gender</label>
+          <select id="suspect_sex">
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Gang / Affiliation</label>
+          <input type="text" id="suspect_gang" placeholder="None / Nama Kelompok">
+        </div>
       </div>
     </div>
-    <div class="sub-box" style="border-right:none; border-top: 1.5px solid #111;">
-      <label>Penal Code Charges / Pelanggaran Pasal</label>
-      <input type="text" id="charges" placeholder="Contoh: PC 501 (Assault), PC 204 (Resisting Arrest)">
+
+    <!-- PENAL CODE CHARGES -->
+    <div class="card">
+      <div class="card-header">
+        <span>03 // PENAL CODE CHARGES</span>
+        <button type="button" class="btn-add" onclick="addChargeRow()">+ TAMBAH PASAL</button>
+      </div>
+      <div class="charges-list" id="charges-container">
+        <div class="charge-row">
+          <div class="field">
+            <input type="text" class="c-code" placeholder="PC 501">
+          </div>
+          <div class="field">
+            <input type="text" class="c-desc" placeholder="Nama Pelanggaran (Contoh: Possession of Illegal Firearm)">
+          </div>
+          <div class="field">
+            <select class="c-class">
+              <option>FELONY</option>
+              <option>MISDEMEANOR</option>
+              <option>INFRACTION</option>
+            </select>
+          </div>
+          <button type="button" class="btn-del" onclick="this.parentElement.remove()">✕</button>
+        </div>
+      </div>
     </div>
+
+    <!-- ARREST DETAILS & NARRATIVE -->
+    <div class="card">
+      <div class="card-header">
+        <span>04 // ARREST CIRCUMSTANCES & NARRATIVE</span>
+        <span>OFFICIAL STATEMENT</span>
+      </div>
+      <div class="grid-3" style="margin-bottom: 12px;">
+        <div class="field">
+          <label>Date & Time</label>
+          <input type="text" id="arrest_datetime" placeholder="14/11/2026 - 04:15 WIB">
+        </div>
+        <div class="field">
+          <label>Arrest Location</label>
+          <input type="text" id="arrest_loc" placeholder="Elysian Island / Docks">
+        </div>
+        <div class="field">
+          <label>Booking Facility</label>
+          <input type="text" id="facility" placeholder="Mission Row Holding / SACF">
+        </div>
+      </div>
+      <div class="field" style="margin-bottom: 12px;">
+        <label>Seized Evidence / Confiscated Items</label>
+        <input type="text" id="evidence" placeholder="Contoh: 1x Desert Eagle (.50 AE), 45g Narcotics, $1,200 Cash">
+      </div>
+      <div class="field">
+        <label>Detailed Arrest Narrative</label>
+        <textarea id="narrative" placeholder="Tuliskan kronologi penangkapan secara rinci, alasan pemberhentian/penggeledahan, serta proses penahanan..."></textarea>
+      </div>
+    </div>
+
+    <!-- OFFICER SIGN-OFF -->
+    <div class="card">
+      <div class="card-header">
+        <span>05 // ARRESTING PERSONNEL & APPROVAL</span>
+        <span>DIGITAL SIGNATURE</span>
+      </div>
+      <div class="grid-3">
+        <div class="field">
+          <label>Primary Arresting Officer</label>
+          <input type="text" id="officer_primary" placeholder="Officer Dwayne Tyler (#25770)">
+        </div>
+        <div class="field">
+          <label>Assisting Unit / Partner</label>
+          <input type="text" id="officer_assist" placeholder="1-ADAM-12 / Officer Torres">
+        </div>
+        <div class="field">
+          <label>Watch Commander / Supervisor</label>
+          <input type="text" id="supervisor" placeholder="Sgt. Theodore Delamour">
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- NARRATIVE SUMMARY -->
-  <div class="section-box">
-    <div class="section-title">Arrest Narrative / Kronologi Penangkapan</div>
-    <div class="sub-box" style="border-right:none;">
-      <textarea id="narrative" placeholder="Tuliskan kronologi lengkap penangkapan, tindakan kepolisian, dan barang bukti yang disita..."></textarea>
-    </div>
-  </div>
-
-  <!-- BOOKING & EVIDENCE -->
-  <div class="section-box">
-    <div class="section-title">Property / Evidence Seized & Booking Status</div>
-    <div class="grid-2">
-      <div class="sub-box" style="border-top:none;">
-        <label>Confiscated Items / Barang Bukti</label>
-        <input type="text" id="evidence" placeholder="Contoh: 1x Pistol, 50 gram Material, dll">
-      </div>
-      <div class="sub-box" style="border-top:none; border-right:none;">
-        <label>Booking Facility / Jail Destination</label>
-        <input type="text" id="jail" placeholder="Mission Row Holding Facility / State Prison">
-      </div>
-    </div>
-  </div>
-
-  <!-- REPORTING OFFICER -->
-  <div class="section-box">
-    <div class="section-title">Arresting / Reporting Officers</div>
-    <div class="grid-2">
-      <div class="sub-box" style="border-top:none;">
-        <label>Primary Officer Name & Badge</label>
-        <input type="text" id="officer_name" placeholder="Dwayne Tyler (#25770)">
-      </div>
-      <div class="sub-box" style="border-top:none; border-right:none;">
-        <label>Assisting Officer / Unit</label>
-        <input type="text" id="assisting_officer" placeholder="1-ADAM-12 / Sergio Torres">
-      </div>
-    </div>
-  </div>
-
-  <!-- SIGNATURES -->
-  <div class="signature-area">
-    <div>
-      <div class="sig-line"></div>
-      <input type="text" id="sig_officer" placeholder="Ketik Nama Officer">
-      <div style="font-size: 10px; color: #444; margin-top: 2px;">PRIMARY ARRESTING OFFICER</div>
-    </div>
-    <div>
-      <div class="sig-line"></div>
-      <input type="text" id="sig_super" placeholder="Ketik Nama Supervisor">
-      <div style="font-size: 10px; color: #444; margin-top: 2px;">BOOKING SUPERVISOR APPROVAL</div>
-    </div>
-  </div>
-
-  <div class="footer-note">
-    LSPD-AR-02 (Rev. 2026) — FOR OFFICIAL USE ONLY (LOS SANTOS POLICE DEPARTMENT)
+  <!-- FOOTER -->
+  <div class="mdt-footer">
+    <span>LSPD-MDT-V4.2 // HARBOR & METROPOLITAN NETWORK</span>
+    <span>FOR OFFICIAL LAW ENFORCEMENT USE ONLY</span>
   </div>
 </div>
 
-<!-- TOMBOL AKSI -->
-<div class="actions-bar">
-  <button class="btn-copy" onclick="copyToDiscord()">📋 Copy Teks (Discord)</button>
-  <button class="btn-img" onclick="saveAsImage()">📷 Simpan Gambar (PNG)</button>
-  <button onclick="window.print()">🖨️ Cetak PDF / Print</button>
+<!-- ACTION BAR -->
+<div class="actions">
+  <button class="action-btn btn-discord" onclick="copyDiscord()">📋 Copy Teks Discord</button>
+  <button class="action-btn btn-png" onclick="downloadPNG()">📷 Simpan Gambar HD</button>
+  <button class="action-btn btn-print" onclick="window.print()">🖨️ Cetak / PDF</button>
 </div>
 
 <script>
-  function copyToDiscord() {
-    const text = `**LOS SANTOS POLICE DEPARTMENT — ARREST REPORT**
+  function addChargeRow() {
+    const container = document.getElementById("charges-container");
+    const row = document.createElement("div");
+    row.className = "charge-row";
+    row.innerHTML = `
+      <div class="field"><input type="text" class="c-code" placeholder="PC Kode"></div>
+      <div class="field"><input type="text" class="c-desc" placeholder="Deskripsi Pelanggaran"></div>
+      <div class="field">
+        <select class="c-class">
+          <option>FELONY</option>
+          <option>MISDEMEANOR</option>
+          <option>INFRACTION</option>
+        </select>
+      </div>
+      <button type="button" class="btn-del" onclick="this.parentElement.remove()">✕</button>
+    `;
+    container.appendChild(row);
+  }
+
+  function copyDiscord() {
+    let chargesText = "";
+    const rows = document.querySelectorAll(".charge-row");
+    rows.forEach((r, idx) => {
+      const code = r.querySelector(".c-code").value || "-";
+      const desc = r.querySelector(".c-desc").value || "-";
+      const cls = r.querySelector(".c-class").value;
+      chargesText += `  ${idx + 1}. **[${cls}] ${code}** — ${desc}\n`;
+    });
+
+    const output = `**LOS SANTOS POLICE DEPARTMENT — ARREST & BOOKING RECORD**
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-* **Booking # / DR#:** ${document.getElementById("booking_no").value || "-"} / ${document.getElementById("dr").value || "-"}
-* **Station / Division:** ${document.getElementById("station").value}
-* **Date & Time:** ${document.getElementById("arrest_date").value || "-"} | ${document.getElementById("arrest_time").value || "-"} WIB
-* **Location:** ${document.getElementById("arrest_location").value || "-"}
-* **Arrest Type:** [${document.getElementById("arrest_type").value}]
+* **Booking # / DR #:** ${document.getElementById("booking_no").value || "-"} / ${document.getElementById("dr_no").value || "-"}
+* **Division:** ${document.getElementById("division").value}
+* **Date & Time:** ${document.getElementById("arrest_datetime").value || "-"}
+* **Location:** ${document.getElementById("arrest_loc").value || "-"}
 
-**[ARRESTEE INFORMATION]**
-* **Name (Alias):** ${document.getElementById("suspect_name").value || "-"} (${document.getElementById("suspect_alias").value || "None"})
-* **Demographics:** ${document.getElementById("suspect_age").value || "-"} yrs | ${document.getElementById("suspect_sex").value} | ${document.getElementById("suspect_race").value || "-"}
-* **Charges:** ${document.getElementById("charges").value || "-"}
+**[ARRESTEE PROFILE]**
+* **Full Name:** ${document.getElementById("suspect_name").value || "-"} (Alias: ${document.getElementById("suspect_alias").value || "None"})
+* **ID / Age / Sex:** ${document.getElementById("suspect_id").value || "-"} | ${document.getElementById("suspect_age").value || "-"} | ${document.getElementById("suspect_sex").value}
+* **Affiliation:** ${document.getElementById("suspect_gang").value || "None"}
 
-**[NARRATIVE SUMMARY]**
+**[PENAL CODE CHARGES]**
+${chargesText || "  - None\n"}
+**[SEIZED EVIDENCE & FACILITY]**
+* **Evidence:** ${document.getElementById("evidence").value || "None"}
+* **Facility:** ${document.getElementById("facility").value || "-"}
+
+**[ARREST NARRATIVE]**
 ${document.getElementById("narrative").value || "-"}
 
-**[EVIDENCE & FACILITY]**
-* **Seized Property:** ${document.getElementById("evidence").value || "None"}
-* **Destination:** ${document.getElementById("jail").value || "-"}
+**[PERSONNEL]**
+* **Primary Officer:** ${document.getElementById("officer_primary").value || "-"}
+* **Assisting Unit:** ${document.getElementById("officer_assist").value || "-"}
+* **Supervisor:** ${document.getElementById("supervisor").value || "-"}`;
 
-**[ARRESTING OFFICERS]**
-* **Primary:** ${document.getElementById("officer_name").value || "-"}`;
-
-    navigator.clipboard.writeText(text).then(() => {
-      alert("Format Arrest Report berhasil disalin untuk Discord!");
+    navigator.clipboard.writeText(output).then(() => {
+      alert("Data Arrest Report berhasil disalin ke Clipboard untuk Discord!");
     });
   }
 
-  function saveAsImage() {
-    const element = document.getElementById("report-form");
-    html2canvas(element, { scale: 2 }).then(canvas => {
+  function downloadPNG() {
+    const target = document.getElementById("mdt-capture");
+    html2canvas(target, { scale: 2, backgroundColor: "#0b0e14" }).then(canvas => {
       const link = document.createElement("a");
-      link.download = "LSPD-Arrest-Report.png";
+      link.download = "LSPD-MDT-Arrest-Report.png";
       link.href = canvas.toDataURL("image/png");
       link.click();
     });
